@@ -10,41 +10,60 @@
     <div class="logo"><a href="/">logo</a></div>
     <div class="content-wrap">
         <div class="side-notebook">
+            <div>
+                <a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+            </div>
             <ul>
-                <li th:each="notebook : ${notebookList}" th:class="${notebook.id == targetNotebook.id} ? 'selected-item' : '' ">
+                <li th:each="notebook : ${notebookList}"
+                    th:class="${notebook.id == targetNotebook.id} ? 'selected-item' : '' ">
                     <a th:href="@{|/notebook/${notebook.id}|}" th:text="${notebook.name}"></a>
                 </li>
             </ul>
             <div>
-                <form action="/notebook/write" method="post">
+                <form th:action="@{/notebook/write}" method="post">
                     <input type="submit" value="추가">
+                </form>
+            </div>
+            <div>
+                <form th:action="@{/notebook/delete}" method="post">
+                    <input type="hidden" name="notebookId" th:value="${targetNotebook.id}">
+                    <input type="button" value="삭제" onclick="updateFormAction(this, ACTIONS_DELETE_BOOK)">
+                </form>
+            </div>
+            <div>
+                <form th:action="@{/notebook/updateName}" method="post">
+                    <input type="text" name="notebookName" th:value="${targetNotebook.getName()}">
+                    <input type="hidden" name="notebookId" th:value="${targetNotebook.id}">
+                    <input type="button" value="이름변경" onclick="updateFormAction(this, ACTIONS_UPDATE_BOOK)">
                 </form>
             </div>
         </div>
         <div class="side-page">
             <!--            3. 템플릿에서 게시물 목록 출력-->
             <ul>
-                <li th:each="notePage : ${notePageList}" th:class="${notePage.id == targetPost.id} ? 'selected-item' : '' ">
+                <li th:each="notePage : ${notePageList}"
+                    th:class="${notePage.id == targetNotePage.id} ? 'selected-item' : '' ">
                     <a th:href="@{|/detail/${notePage.id}|}" th:text="${notePage.title}"></a>
                 </li>
             </ul>
             <div>
-                <form action="/write" method="post">
+                <form th:action="@{/write}" method="post">
                     <input type="hidden" name="notebookId" th:value="${targetNotebook.id}">
                     <input type="submit" value="추가">
                 </form>
             </div>
         </div>
         <div class="content">
-            <form id="updateForm" method="post">
+            <form th:action id="updateForm" method="post">
                 <div>
-                    <input type="hidden" name="id" th:value="${targetPost.id}">
+                    <input type="hidden" name="id" th:value="${targetNotePage.id}">
                 </div>
                 <div>
-                    <input type="text" name="title" th:value="${targetPost.title}">
+                    <input type="text" name="title" th:value="${targetNotePage.title}">
                 </div>
                 <div>
-                    <textarea name="content" cols="30" rows="10" th:text="${targetPost.content}"></textarea>
+                    <textarea name="content" cols="30" rows="10" th:text="${targetNotePage.content}"></textarea>
                 </div>
                 <div>
                     <input type="button" value="수정" onclick="updateFormAction(this, ACTIONS_UPDATE)">
@@ -60,10 +79,18 @@
     ACTIONS_UPDATE = {
         'url' : '/update',
         'msg' : '수정하시겠습니까?'
-    };
+    }
     ACTIONS_DELETE = {
         'url' : '/delete',
         'msg' : '삭제하시겠습니까?'
+    }
+    ACTIONS_DELETE_BOOK = {
+        'url' : '/notebook/delete',
+        'msg' : '삭제하시겠습니까?'
+    }
+    ACTIONS_UPDATE_BOOK = {
+        'url' : '/notebook/updateName',
+        'msg' : '수정하시겠습니까?'
     }
 
     function updateFormAction(input, action) {

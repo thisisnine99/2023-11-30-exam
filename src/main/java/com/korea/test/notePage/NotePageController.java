@@ -1,12 +1,12 @@
-package com.korea.test;
+package com.korea.test.notePage;
 
+import com.korea.test.notebook.Notebook;
+import com.korea.test.notebook.NotebookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -23,7 +23,6 @@ public class NotePageController {
 
     @RequestMapping("/")
     public String main(Model model) {
-        //1. DB에서 데이터 꺼내오기
         List<Notebook> notebookList = notebookService.getNotebookList();
 
         if(notebookList.isEmpty()) {
@@ -40,10 +39,10 @@ public class NotePageController {
         }
 
         //2. 꺼내온 데이터를 템플릿으로 보내기
-        model.addAttribute("notePageList", notePageList);
-        model.addAttribute("targetPost", notePageList.get(0));
-        model.addAttribute("targetNotebook", targetNotebook);
         model.addAttribute("notebookList", notebookList);
+        model.addAttribute("targetNotebook", targetNotebook);
+        model.addAttribute("notePageList", notePageList);
+        model.addAttribute("targetNotePage", notePageList.get(0));
 
         return "main";
     }
@@ -57,14 +56,14 @@ public class NotePageController {
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable Long id) {
-        NotePage notePage = notePageService.getNotePageById(id);
-        List<NotePage> notePageList = notePageService.getNotePageListByNotebook(notePage.getNotebook());
+        NotePage targetNotePage = notePageService.getNotePageById(id);
+        List<NotePage> notePageList = notePageService.getNotePageListByNotebook(targetNotePage.getNotebook());
         List<Notebook> notebookList = notebookService.getNotebookList();
 
-        model.addAttribute("targetPost", notePage);
+        model.addAttribute("targetNotePage", targetNotePage);
         model.addAttribute("notePageList", notePageList);
         model.addAttribute("notebookList", notebookList);
-        model.addAttribute("targetNotebook", notePage.getNotebook());
+        model.addAttribute("targetNotebook", targetNotePage.getNotebook());
 
         return "main";
     }

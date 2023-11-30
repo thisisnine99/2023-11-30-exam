@@ -1,5 +1,6 @@
-package com.korea.test;
+package com.korea.test.notebook;
 
+import com.korea.test.notePage.NotePage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class Notebook {
     @Column(nullable = false)
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "notebook")
+    @OneToMany(mappedBy = "notebook", cascade = CascadeType.REMOVE)
     private List<NotePage> notePageList;
 
 }

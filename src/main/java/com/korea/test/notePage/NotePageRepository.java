@@ -1,5 +1,6 @@
-package com.korea.test;
+package com.korea.test.notePage;
 
+import com.korea.test.notebook.Notebook;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

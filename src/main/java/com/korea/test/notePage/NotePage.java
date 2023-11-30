@@ -1,5 +1,6 @@
-package com.korea.test;
+package com.korea.test.notePage;
 
+import com.korea.test.notebook.Notebook;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

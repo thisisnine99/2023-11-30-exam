@@ -1,5 +1,6 @@
-package com.korea.test;
+package com.korea.test.notePage;
 
+import com.korea.test.notebook.Notebook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
